@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd"
+             xmlns:beans="http://www.springframework.org/schema/beans">
+    <context:component-scan base-package="cn.com.cis.web.actions"/>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash; 需拦截的地址 &ndash;&gt;-->
+            <!--&lt;!&ndash; 一级目录 &ndash;&gt;-->
+            <!--<mvc:mapping path="/*"/>-->
+            <!--&lt;!&ndash; 二级目录 &ndash;&gt;-->
+            <!--<mvc:mapping path="/*/*"/>-->
+            <!--&lt;!&ndash; 三级目录 &ndash;&gt;-->
+            <!--<mvc:mapping path="/*/*/*"/>-->
+
+            <!--&lt;!&ndash; 需排除拦截的地址 &ndash;&gt;-->
+            <!--<mvc:exclude-mapping path="/login"/>-->
+            <!--<mvc:exclude-mapping path="/log/power"/>-->
+            <!--<mvc:exclude-mapping path="/res/*/*"/>-->
+            <!--&lt;!&ndash;<beans:bean class="net.vicp.irock.web.interceptor.SecurityInterceptor" />&ndash;&gt;-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+    <context:annotation-config/>
+    <mvc:view-controller path="/" view-name="index"/>
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/pages/"/>
+        <beans:property name="suffix" value=".jsp"/>
+    </beans:bean>
+    <mvc:resources mapping="/res/**" location="/res/"/>
+    <!--<resources mapping="/res/css/**" location="/res/css/"/>-->
+    <!--<resources mapping="/res/bootstrap/**" location="/res/bootstrap/"/>-->
+    <!--<resources mapping="/res/font/**" location="/res/font/"/>-->
+    <!--<resources mapping="/res/highcharts/**" location="/res/highcharts/"/>-->
+    <!--<resources mapping="/res/images/**" location="/res/images/"/>-->
+    <!--<resources mapping="/res/jquery/**" location="/res/jquery/"/>-->
+    <!--<resources mapping="/res/js/**" location="/res/js/"/>-->
+    <!--<websocket:handlers>-->
+        <!--<websocket:mapping path="/websocket" handler="websocket"/>-->
+        <!--<websocket:handshake-interceptors>-->
+            <!--<beans:bean class="net.vicp.irock.core.websocket.HandshakeInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+    <!--</websocket:handlers>-->
+    <!--<mvc:annotation-driven>-->
+    <!--<mvc:message-converters>-->
+        <!--<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+            <!--<beans:property name="supportedMediaTypes">-->
+                <!--<beans:list>-->
+                    <!--<beans:value>text/plain;charset=UTF-8</beans:value>-->
+                    <!--<beans:value>text/html;charset=UTF-8</beans:value>-->
+                <!--</beans:list>-->
+            <!--</beans:property>-->
+        <!--</beans:bean>-->
+        <!--<beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+            <!--<beans:property name="supportedMediaTypes">-->
+                <!--<beans:list>-->
+                    <!--<beans:value>application/json;charset=UTF-8</beans:value>-->
+                    <!--<beans:value>application/x-www-form-urlencoded;charset=UTF-8</beans:value>-->
+                <!--</beans:list>-->
+            <!--</beans:property>-->
+        <!--</beans:bean>-->
+    <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
+    <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+        <beans:property name="supportedMediaTypes">
+            <beans:list>
+                <beans:value>text/plain;charset=UTF-8</beans:value>
+                <beans:value>text/html;charset=UTF-8</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <beans:property name="supportedMediaTypes">
+            <beans:list>
+                <beans:value>application/json;charset=UTF-8</beans:value>
+                <beans:value>application/x-www-form-urlencoded;charset=UTF-8</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+</beans:beans>

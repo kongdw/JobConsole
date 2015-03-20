@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.JobConfigMapper">
+    <cache/>
+    <resultMap id="jobConfigResultMap" type="cn.com.cis.domain.JobConfig">
+        <result property="jobId" column="JOB_ID" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="jobName" column="JOB_NAME" javaType="String" jdbcType="VARCHAR"/>
+        <result property="jobGroup" column="GROUP_ID" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="cronExpression" column="CRON_EXPRESSION" javaType="String" jdbcType="VARCHAR"/>
+        <result property="etlFileUrl" column="FILE_URL" javaType="String" jdbcType="VARCHAR"/>
+        <result property="remark" column="REMARK" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryAllJobs" resultMap="jobConfigResultMap">
+        SELECT  * from JOB_CONFIG
+    </select>
+    <select id="queryJobConfigById" resultMap="jobConfigResultMap">
+        SELECT * FROM JOB_CONFIG WHERE JOB_ID = #{jobId}
+    </select>
+    <update id="updateJobConfig" parameterType="JobConfig">
+        UPDATE JOB_CONFIG SET
+          GROUP_ID = #{jobGroup},
+          STATUS = #{status},
+          CRON_EXPRESSION = #{cronExpression,jdbcType=VARCHAR},
+          FILE_URL = #{etlFileUrl},
+          REMARK = #{serverName,jdbcType=VARCHAR}
+        WHERE JOB_ID = #{id}
+    </update>
+    <insert id="insertJobConfig" parameterType="cn.com.cis.domain.JobConfig" useGeneratedKeys="true" keyProperty="jobId" keyColumn="JOB_ID">
+        INSERT INTO JOB_CONFIG
+          (JOB_NAME,GROUP_ID,STATUS,CRON_EXPRESSION,FILE_URL,REMARK)
+        VALUES
+          (#{jobName,jdbcType=VARCHAR}, #{jobGroup,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{cronExpression,jdbcType=VARCHAR}, #{etlFileUrl,jdbcType=VARCHAR},  #{remark,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delJobConfig">
+        DELETE FROM JOB_CONFIG WHERE JOB_ID = #{id}
+    </delete>
+</mapper>

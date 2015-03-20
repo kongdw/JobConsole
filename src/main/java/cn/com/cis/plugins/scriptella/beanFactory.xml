@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+       default-lazy-init="false">
+    <bean id="scriptella.driver.spring.factory" class="org.springframework.context.support.StaticApplicationContext"/>
+    <!--<bean class="scriptella.driver.spring.BatchEtlExecutorBean" init-method="run">-->
+        <!--<property name="configLocations"><list>-->
+            <!--<value>/scriptella/driver/spring/batch1.etl.xml</value>-->
+            <!--<value>/scriptella/driver/spring/batch2.etl.xml</value>-->
+        <!--</list></property>-->
+        <!--<property name="properties">-->
+            <!--<map>-->
+                <!--<entry key="tableName" value="Batch"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="false">
+    <bean id="scriptella.driver.spring.factory" class="org.springframework.context.support.StaticApplicationContext"/>
+    <bean id="scheduler-JDBC" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="true">
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="jobFactory">
+            <bean class="org.springframework.scheduling.quartz.SpringBeanJobFactory" />
+        </property>
+        <property name="overwriteExistingJobs" value="true" />
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.jobStore.isClustered">false</prop>
+                <prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+            </props>
+        </property>
+    </bean>
+    <!--<bean id="executor" class="scriptella.driver.spring.EtlExecutorBean">-->
+        <!--<property name="configLocation" value="/scriptella/driver/spring/SpringDriverTest.xml"/>-->
+        <!--<property name="properties"><map>-->
+            <!--<entry key="tableName" value="SpringTable"/>-->
+        <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <bean id="cronScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" parent="scheduler-JDBC">
+        <property name="startupDelay" value="10" />
+        <property name="autoStartup" value="true" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+    </bean>
+
+    <bean id="threadConfig" class="cn.com.cis.plugins.threadpool4j.ThreadPoolConfig">
+        <property name="configLocation" value="/WEB-INF/config/threadpool4j.xml"/>
+    </bean>
+    <bean id="threadPool" class="cn.com.cis.plugins.threadpool4j.ThreadPoolImpl" init-method="init" destroy-method="destroy">
+        <property name="threadPoolConfig" ref="threadConfig"/>
+    </bean>
+
+    <!--&lt;!&ndash;加载数据库任务&ndash;&gt;-->
+    <bean id="loadTask" class="cn.com.cis.plugins.quartz.QrtzJobService" init-method="loadTask"/>
+</beans>

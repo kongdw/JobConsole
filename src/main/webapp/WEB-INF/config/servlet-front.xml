@@ -7,7 +7,14 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd"
              xmlns:beans="http://www.springframework.org/schema/beans">
+
+
     <context:component-scan base-package="cn.com.cis.web.actions"/>
+    <mvc:annotation-driven />
+    <context:annotation-config/>
+    <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+        <beans:constructor-arg value="UTF-8"/>
+    </beans:bean>
     <!--<mvc:interceptors>-->
         <!--<mvc:interceptor>-->
             <!--&lt;!&ndash; 需拦截的地址 &ndash;&gt;-->
@@ -22,13 +29,12 @@
             <!--<mvc:exclude-mapping path="/login"/>-->
             <!--<mvc:exclude-mapping path="/log/power"/>-->
             <!--<mvc:exclude-mapping path="/res/*/*"/>-->
-            <!--&lt;!&ndash;<beans:bean class="net.vicp.irock.web.interceptor.SecurityInterceptor" />&ndash;&gt;-->
+            <!--<beans:bean class="cn.com.cis.web.interceptor.SecurityInterceptor" />-->
         <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
-    <context:annotation-config/>
-    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:view-controller path="/" view-name="login"/>
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <beans:property name="prefix" value="/WEB-INF/pages/"/>
+        <beans:property name="prefix" value="/WEB-INF/view/"/>
         <beans:property name="suffix" value=".jsp"/>
     </beans:bean>
     <mvc:resources mapping="/res/**" location="/res/"/>

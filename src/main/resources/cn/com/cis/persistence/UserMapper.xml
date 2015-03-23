@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.UserMapper">
+
+    <cache/>
+
+  <select id="selectUserById" resultType="User">
+    SELECT
+        ID_USER as id,
+        USERNAME as userName,
+        PASSWORD,
+        EMAIL,
+        PHONE,
+        ENABLED,
+        ROLETYPE
+    FROM JM_USER
+    WHERE ID_USER = #{id}
+  </select>
+
+    <resultMap id="UserResultMap" type="cn.com.cis.domain.User">
+        <id property="id" column="ID_USER"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="email" column="EMAIL"/>
+        <result property="phone" column="PHONE"/>
+        <result property="enabled" column="ENABLED"/>
+        <result property="roleType" column="ROLETYPE"/>
+    </resultMap>
+
+    <select id="selectAllUser"  resultMap="UserResultMap">
+        SELECT ID_USER,USERNAME,PASSWORD,EMAIL,PHONE,ENABLED,ROLETYPE FROM JM_USER
+    </select>
+
+  <select id="selectUserByUsernameAndPassword" resultType="User">
+    SELECT
+          ID_USER as id,
+          USERNAME as userName,
+          EMAIL,
+          PHONE,
+          ENABLED,
+          ROLETYPE
+    FROM JM_USER
+    WHERE USERNAME = #{param1}
+      AND PASSWORD = #{param2}
+  </select>
+
+  <update id="updateUser" parameterType="User">
+    UPDATE JM_USER SET
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BOOLEAN},
+      ROLETYPE= #{roleType,jdbcType=VARCHAR}
+    WHERE ID_USER = #{id}
+  </update>
+
+  <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyColumn="ID_USER" keyProperty="id">
+    INSERT INTO JM_USER
+      (USERNAME,PASSWORD,EMAIL, PHONE,ENABLED,ROLETYPE)
+    VALUES
+      (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{enabled,jdbcType=BOOLEAN},#{roleType,jdbcType=VARCHAR})
+  </insert>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from JM_USER where ID_USER = #{id}
+    </delete>
+
+</mapper>

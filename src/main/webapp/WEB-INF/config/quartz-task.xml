@@ -2,6 +2,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
 	default-lazy-init="false">
+    <bean name="etlServer1" class="cn.com.cis.job.ETLServer" destroy-method="shutdownNow">
+        <property name="blockingDeque">
+            <bean class="java.util.concurrent.LinkedBlockingDeque">
+                <constructor-arg value="500"/>
+            </bean>
+        </property>
+        <property name="nThreads">
+            <value>4</value>
+        </property>
+    </bean>
+    <bean id="etlServerTask1" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+        <property name="runnable" ref="etlServer1"/>
+        <!-- 容器加载5秒后开始执行 -->
+        <property name="delay" value="5000"/>
+        <!-- 每次任务间隔 30秒-->
+        <!--<property name="period" value="30000" />-->
+    </bean>
+    <bean id="etlServerFactoryBean"
+          class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
+        <property name="scheduledExecutorTasks">
+            <list>
+                <ref bean="etlServerTask1"/>
+            </list>
+        </property>
+    </bean>
     <bean id="scriptella.driver.spring.factory" class="org.springframework.context.support.StaticApplicationContext"/>
     <bean id="scheduler-JDBC" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="true">
         <property name="dataSource" ref="dataSource" />

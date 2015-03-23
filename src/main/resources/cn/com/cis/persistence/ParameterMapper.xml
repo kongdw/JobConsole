@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.ParameterMapper">
+
+    <cache/>
+
+    <resultMap id="parameterTypeResultMap" type="cn.com.cis.domain.ParameterType">
+        <result property="code" column="PARAM_TYPE"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="jdbcType" column="JDBC_TYPE"/>
+        <result property="enabled" column="ENABLED"/>
+    </resultMap>
+
+    <resultMap id="parameterRefResultMap" type="cn.com.cis.domain.ParameterRef">
+        <id property="id" column="ID_REF"/>
+        <result property="refName" column="REF_NAME"/>
+        <result property="defaultVal" column="DEFAULT_VAL"/>
+        <result property="sqlScript" column="SQL_SCRIPT" javaType="java.lang.String" jdbcType="CLOB"/>
+        <association property="database" resultMap="cn.com.cis.persistence.DatabaseMapper.databaseResultMap"
+                     columnPrefix="B_"/>
+        <association property="returnType" resultMap="parameterTypeResultMap" columnPrefix="D_"/>
+    </resultMap>
+
+    <resultMap id="parameterResultMap" type="cn.com.cis.domain.Parameter">
+        <id property="id" column="P_ID_PARAM"/>
+        <result property="jobId" column="P_ID_JOB"/>
+        <result property="scope" column="P_SCOPE"/>
+        <result property="parameterName" column="P_PARAM_NAME"/>
+        <result property="parameterValue" column="P_DEFAULT_VAL"/>
+        <association property="parameterType" resultMap="parameterTypeResultMap" columnPrefix="T_"/>
+        <association property="parameterRef" resultMap="parameterRefResultMap" columnPrefix="R_"/>
+    </resultMap>
+    <sql id="parameterColumns">
+          ID_PARAM        P_ID_PARAM,
+          ID_JOB          P_ID_JOB,
+          PARAM_NAME      P_PARAM_NAME,
+          A.DEFAULT_VAL   P_DEFAULT_VAL,
+          SCOPE           P_SCOPE,
+          B.PARAM_TYPE    T_PARAM_TYPE,
+          B.DESCRIPTION   T_DESCRIPTION,
+          B.JDBC_TYPE     T_JDBC_TYPE,
+          B.ENABLED       T_ENABLED,
+          C.ID_REF        R_ID_REF,
+          C.REF_NAME      R_REF_NAME,
+          F.PARAM_TYPE    R_D_PARAM_TYPE,
+          F.JDBC_TYPE     R_D_JDBC_TYPE,
+          F.DESCRIPTION   R_D_DESCRIPTION,
+          C.DEFAULT_VAL   R_DEFAULT_VAL,
+          C.SQL_SCRIPT    R_SQL_SCRIPT,
+          D.ID_DATABASE   R_D_ID_DATABASE,
+          D.DATABASE_NAME R_D_DATABASE_NAME,
+          D.HOST_NAME     R_D_HOST_NAME,
+          D.NAME          R_D_NAME,
+          D.PASSWORD      R_D_PASSWORD,
+          D.PORT          R_D_PORT,
+          D.DB_TYPE       R_D_DB_TYPE,
+          E.URL           R_D_URL,
+          E.DRIVER        R_D_DRIVER
+    </sql>
+    <select id="selectParameterById" resultMap="parameterResultMap">
+        SELECT
+        <include refid="parameterColumns"/>
+        FROM JM_PARAMETER A
+        INNER JOIN JM_PARAMETER_TYPE B
+        ON A.PARAM_TYPE = B.PARAM_TYPE
+        LEFT JOIN JM_PARAMETER_REF C
+        ON A.ID_REF = C.ID_REF
+        LEFT JOIN JM_PARAMETER_TYPE F
+        ON C.RETURN_TYPE = F.PARAM_TYPE
+        LEFT JOIN JM_DATABASE D
+        ON C.ID_DATABASE = D.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE E
+        ON D.DB_TYPE = E.DB_TYPE
+        WHERE A.ID_PARAM = #{id}
+    </select>
+
+    <select id="selectParameterByRefId" resultMap="parameterResultMap">
+        SELECT
+        <include refid="parameterColumns"/>
+        FROM JM_PARAMETER A
+        INNER JOIN JM_PARAMETER_TYPE B
+        ON A.PARAM_TYPE = B.PARAM_TYPE
+        LEFT JOIN JM_PARAMETER_REF C
+        ON A.ID_REF = C.ID_REF
+        LEFT JOIN JM_PARAMETER_TYPE F
+        ON C.RETURN_TYPE = F.PARAM_TYPE
+        LEFT JOIN JM_DATABASE D
+        ON C.ID_DATABASE = D.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE E
+        ON D.DB_TYPE = E.DB_TYPE
+        WHERE A.PARAM_TYPE = B.PARAM_TYPE
+        AND c.id_ref = #{id}
+    </select>
+
+    <select id="selectParameterByJobId" resultMap="parameterResultMap">
+        SELECT
+        <include refid="parameterColumns"/>
+        FROM JM_PARAMETER A
+        INNER JOIN JM_PARAMETER_TYPE B
+        ON A.PARAM_TYPE = B.PARAM_TYPE
+        LEFT JOIN JM_PARAMETER_REF C
+        ON A.ID_REF = C.ID_REF
+        LEFT JOIN JM_PARAMETER_TYPE F
+        ON C.RETURN_TYPE = F.PARAM_TYPE
+        LEFT JOIN JM_DATABASE D
+        ON C.ID_DATABASE = D.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE E
+        ON D.DB_TYPE = E.DB_TYPE
+        WHERE A.ID_JOB = #{jobId}
+        ORDER BY PARAM_NAME ASC
+    </select>
+
+    <select id="selectAllParameterType" resultMap="parameterTypeResultMap">
+        SELECT
+        PARAM_TYPE,
+        DESCRIPTION,
+        JDBC_TYPE,
+        ENABLED
+        FROM JM_PARAMETER_TYPE
+        where ENABLED = true
+        order by PARAM_TYPE asc
+    </select>
+
+    <select id="selectParameterTypeById" resultMap="parameterTypeResultMap">
+        SELECT
+        PARAM_TYPE,
+        DESCRIPTION,
+        JDBC_TYPE,
+        ENABLED
+        FROM JM_PARAMETER_TYPE
+        where ENABLED = true
+        and PARAM_TYPE = #{code}
+        order by PARAM_TYPE asc
+    </select>
+
+    <insert id="insertParameter" parameterType="cn.com.cis.domain.Parameter" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="ID_PARAM">
+        INSERT INTO JM_PARAMETER (ID_JOB,PARAM_NAME,PARAM_TYPE,ID_REF,DEFAULT_VAL,SCOPE)
+          VALUES (#{jobId},#{parameterName},#{parameterType.code,jdbcType=VARCHAR},#{parameterRef.id,jdbcType=INTEGER},#{parameterValue,jdbcType=VARCHAR},#{scope})
+    </insert>
+
+    <sql id="parameterRefColumn">
+          ID_REF,
+          REF_NAME,
+          DEFAULT_VAL,
+          SQL_SCRIPT,
+          B.ID_DATABASE B_ID_DATABASE,
+          B.DB_TYPE B_DB_TYPE,
+          B.DATABASE_NAME B_DATABASE_NAME,
+          B.HOST_NAME B_HOST_NAME,
+          B.NAME B_NAME,
+          B.SERVER_NAME B_SERVER_NAME,
+          B.USERNAME B_USERNAME,
+          B.PORT B_PORT,
+          B.PASSWORD B_PASSWORD,
+          C.DESCRIPTION B_DESCRIPTION,
+          C.URL B_URL,
+          C.DRIVER B_DRIVER,
+          D.PARAM_TYPE D_PARAM_TYPE,
+          D.JDBC_TYPE D_JDBC_TYPE,
+          D.DESCRIPTION D_DESCRIPTION
+    </sql>
+    <select id="selectAllParameterRef" resultMap="parameterRefResultMap">
+        SELECT
+        <include refid="parameterRefColumn"/>
+        FROM JM_PARAMETER_REF A
+        LEFT JOIN JM_DATABASE B
+        ON A.ID_DATABASE = B.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE C
+        ON B.DB_TYPE = C.DB_TYPE
+        INNER JOIN JM_PARAMETER_TYPE D
+        ON A.RETURN_TYPE = D.PARAM_TYPE
+        ORDER BY REF_NAME ASC
+    </select>
+    <select id="selectParameterRefByName" resultMap="parameterRefResultMap">
+        SELECT
+        <include refid="parameterRefColumn"/>
+        FROM JM_PARAMETER_REF A
+        LEFT JOIN JM_DATABASE B
+        ON A.ID_DATABASE = B.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE C
+        ON B.DB_TYPE = C.DB_TYPE
+        INNER JOIN JM_PARAMETER_TYPE D
+        ON A.RETURN_TYPE = D.PARAM_TYPE
+        where REF_NAME = #{name}
+        ORDER BY REF_NAME ASC
+    </select>
+    <select id="selectParameterRefById" resultMap="parameterRefResultMap">
+        SELECT
+        <include refid="parameterRefColumn"/>
+        FROM JM_PARAMETER_REF A
+        LEFT JOIN JM_DATABASE B
+        ON A.ID_DATABASE = B.ID_DATABASE
+        LEFT JOIN JM_DATABASE_TYPE C
+        ON B.DB_TYPE = C.DB_TYPE
+        INNER JOIN JM_PARAMETER_TYPE D
+        ON A.RETURN_TYPE = D.PARAM_TYPE
+        where ID_REF = #{id}
+    </select>
+    <insert id="insertParameterRef" parameterType="cn.com.cis.domain.ParameterRef" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="ID_REF">
+        INSERT INTO JM_PARAMETER_REF (REF_NAME,ID_DATABASE,SQL_SCRIPT,RETURN_TYPE,DEFAULT_VAL)
+        VALUES (#{refName},#{database.id,jdbcType=INTEGER},#{sqlScript,jdbcType=CLOB},#{returnType.code,jdbcType=VARCHAR},#{defaultVal,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteParameter" parameterType="int">
+        DELETE FROM JM_PARAMETER WHERE ID_PARAM = #{id}
+    </delete>
+
+    <delete id="deleteParameterByJobId" parameterType="int">
+        DELETE FROM JM_PARAMETER WHERE  ID_JOB = #{jobId}
+    </delete>
+    <delete id="deleteParameterRef" parameterType="int">
+        delete from JM_PARAMETER_REF where id_ref = #{id}
+    </delete>
+    <update id="updateParameter" parameterType="Parameter">
+        UPDATE JM_PARAMETER SET
+          PARAM_NAME = #{parameterName},
+          PARAM_TYPE = #{parameterType.code},
+          DEFAULT_VAL = #{parameterValue}
+        WHERE ID_PARAM = #{id}
+    </update>
+
+    <update id="updateParameterRef" parameterType="ParameterRef">
+        update JM_PARAMETER_REF set
+        ID_DATABASE = #{database.id,jdbcType=INTEGER},
+        SQL_SCRIPT = #{sqlScript,jdbcType=CLOB},
+        RETURN_TYPE = #{returnType.code,jdbcType=VARCHAR},
+        DEFAULT_VAL = #{defaultVal,jdbcType=VARCHAR}
+        where ID_REF = #{id}
+    </update>
+
+    <update id="UpdateParamByIDAjax" parameterType="ParameterRef" >
+        update JM_PARAMETER_REF set
+        DEFAULT_VAL = #{defaultVal,jdbcType=VARCHAR}
+        where ID_REF = #{id}
+    </update>
+</mapper>

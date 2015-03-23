@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.DatabaseMapper">
+
+    <cache/>
+
+    <resultMap id="databaseTypeResultMap" type="cn.com.cis.domain.DatabaseType">
+        <result property="type" column="DB_TYPE" javaType="String" jdbcType="VARCHAR"/>
+        <result property="description" column="DESCRIPTION" javaType="String" jdbcType="VARCHAR"/>
+        <result property="url" column="URL" javaType="String" jdbcType="VARCHAR"/>
+        <result property="url2" column="URL2" javaType="String" jdbcType="VARCHAR"/>
+        <result property="driver" column="DRIVER" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="databaseResultMap" type="cn.com.cis.domain.Database">
+        <id property="id" column="ID_DATABASE"/>
+        <result property="name" column="NAME"/>
+        <result property="hostName" column="HOST_NAME"/>
+        <result property="port" column="PORT"/>
+        <result property="serverName" column="SERVER_NAME"/>
+        <result property="databaseName" column="DATABASE_NAME"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <association property="databaseType" resultMap="databaseTypeResultMap"/>
+    </resultMap>
+
+    <select id="selectDatabaseById" resultMap="databaseResultMap">
+        SELECT
+          ID_DATABASE,
+          NAME,
+          HOST_NAME,
+          PORT,
+          SERVER_NAME,
+          DATABASE_NAME,
+          USERNAME,
+          PASSWORD,
+          A.DB_TYPE,
+          DESCRIPTION,
+          URL,
+          URL2,
+          DRIVER
+        FROM JM_DATABASE A,JM_DATABASE_TYPE B
+        WHERE A.DB_TYPE = B.DB_TYPE
+              AND A.ID_DATABASE = #{id}
+    </select>
+    <select id="selectDatabaseByName" resultMap="databaseResultMap">
+        SELECT
+        ID_DATABASE,
+        NAME,
+        HOST_NAME,
+        PORT,
+        SERVER_NAME,
+        DATABASE_NAME,
+        USERNAME,
+        PASSWORD,
+        A.DB_TYPE,
+        DESCRIPTION,
+        URL,
+        URL2,
+        DRIVER
+        FROM JM_DATABASE A,JM_DATABASE_TYPE B
+        WHERE A.DB_TYPE = B.DB_TYPE
+        AND A.NAME = #{name}
+    </select>
+    <select id="selectAllDatabase" resultMap="databaseResultMap">
+        SELECT
+          ID_DATABASE,
+          NAME,
+          HOST_NAME,
+          PORT,
+          SERVER_NAME,
+          DATABASE_NAME,
+          USERNAME,
+          PASSWORD,
+          A.DB_TYPE,
+          DESCRIPTION,
+          URL,
+          URL2,
+          DRIVER
+        FROM JM_DATABASE A,JM_DATABASE_TYPE B
+        WHERE A.DB_TYPE = B.DB_TYPE
+        ORDER BY NAME ASC
+    </select>
+
+    <select id="selectAllDatabaseType" resultMap="databaseTypeResultMap">
+        SELECT
+          DB_TYPE,
+          DESCRIPTION,
+          URL,
+          URL2,
+          DRIVER
+        FROM JM_DATABASE_TYPE
+    </select>
+
+    <select id="selectDatabaseTypeById" resultMap="databaseTypeResultMap">
+         SELECT
+          DB_TYPE,
+          DESCRIPTION,
+          URL,
+          URL2,
+          DRIVER
+        FROM JM_DATABASE_TYPE
+        WHERE DB_TYPE = #{type}
+    </select>
+
+    <update id="updateDatabaseType" parameterType="DatabaseType">
+          UPDATE JM_DATABASE_TYPE SET
+          DB_TYPE = #{type},
+          DESCRIPTION = #{description,jdbcType=VARCHAR},
+          URL = #{url},
+          DRIVER = #{driver}
+        WHERE DB_TYPE = #{type}
+    </update>
+    <delete id="deleteDatabaseType" >
+        DELETE from JM_DATABASE_TYPE WHERE DB_TYPE =  #{type}
+    </delete>
+    <insert id="insertDatabaseType" parameterType="DatabaseType">
+          INSERT INTO JM_DATABASE_TYPE
+          (DB_TYPE,DESCRIPTION, URL, DRIVER)
+        VALUES
+          (#{type},#{description,jdbcType=VARCHAR}, #{url}, #{driver})
+    </insert>
+    <update id="updateDatabase" parameterType="Database">
+        UPDATE JM_DATABASE SET
+          DB_TYPE = #{databaseType.type},
+          NAME = #{name},
+          HOST_NAME = #{hostName},
+          PORT = #{port},
+          SERVER_NAME = #{serverName,jdbcType=VARCHAR},
+          DATABASE_NAME = #{databaseName,jdbcType=VARCHAR},
+          USERNAME = #{username,jdbcType=VARCHAR},
+          PASSWORD = #{password,jdbcType=VARCHAR}
+        WHERE ID_DATABASE = #{id}
+    </update>
+    <!-- useGeneratedKeys="true" 定义主键自增长-->
+    <insert id="insertDatabase" parameterType="cn.com.cis.domain.Database" useGeneratedKeys="true" keyProperty="id" keyColumn="ID_DATABASE">
+        INSERT INTO JM_DATABASE
+          (DB_TYPE,NAME, HOST_NAME, SERVER_NAME, DATABASE_NAME, PORT, USERNAME, PASSWORD)
+        VALUES
+          (#{databaseType.type},#{name}, #{hostName}, #{serverName,jdbcType=VARCHAR}, #{databaseName,jdbcType=VARCHAR}, #{port},  #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteDatabase">
+        DELETE FROM JM_DATABASE WHERE ID_DATABASE = #{id}
+    </delete>
+
+    <select id="selectDatabaseByType" resultType="int">
+        select count(*) from JM_DATABASE where DB_TYPE = #{param1}
+    </select>
+</mapper>

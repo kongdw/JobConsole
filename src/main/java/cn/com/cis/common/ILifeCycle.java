@@ -9,11 +9,11 @@ public interface ILifeCycle {
     /**
      * 初始化资源。
      */
-    public void init();
+    public void init() throws Exception;
     
     /**
      * 释放资源。
      */
-    public void destroy();
+    public void destroy() throws Exception;
 
 }

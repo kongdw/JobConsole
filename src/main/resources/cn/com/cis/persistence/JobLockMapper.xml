@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.JobLockMapper">
+    <cache/>
+    <resultMap id="jobLockResultMap" type="cn.com.cis.domain.JobLock">
+        <id property="id" column="ID_LOCK"/>
+        <result property="jobId" column="ID_JOB"/>
+        <result property="status" column="STATUS"/>
+        <result property="lockDate" column="LOCK_DATE"/>
+    </resultMap>
+
+    <select id="selectJobLockByJobId" resultMap="jobLockResultMap">
+        SELECT
+        ID_LOCK,
+        ID_JOB,
+        STATUS,
+        LOCK_DATE
+        FROM JM_LOCK
+        WHERE ID_JOB = #{jobId}
+    </select>
+    <select id="selectJobLockById" resultMap="jobLockResultMap">
+        SELECT
+            ID_LOCK,
+            ID_JOB,
+            STATUS,
+            LOCK_DATE
+        FROM JM_LOCK
+        WHERE ID_LOCK = #{id}
+    </select>
+    <insert id="insertJobLock" parameterType="cn.com.cis.domain.JobLock" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="ID_LOCK">
+        INSERT INTO
+        JM_LOCK (
+        ID_JOB,
+        STATUS,
+        LOCK_DATE)
+        VALUES (#{jobId},#{status},#{lockDate})
+    </insert>
+    <insert id="updateJobLock" parameterType="cn.com.cis.domain.JobLock">
+        UPDATE JM_LOCK SET
+        STATUS = #{status}
+        where ID_LOCK = #{id}
+    </insert>
+    <delete id="deleteJobLock" parameterType="int">
+        DELETE FROM JM_LOCK  WHERE ID_LOCK = #{id}
+    </delete>
+
+    <delete id="deleteJobLockByJobId" parameterType="int">
+        DELETE FROM JM_LOCK  WHERE ID_JOB = #{jobId}
+    </delete>
+</mapper>
+

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.JobMapper">
+    <cache/>
+
+    <resultMap id="jobEntityResultMap" type="cn.com.cis.domain.JobEntity">
+        <id property="id" column="J_ID_JOB"/>
+        <result property="sequence" column="J_SEQUENCE"/>
+        <result property="name" column="J_NAME"/>
+        <result property="sqlScript" column="J_SQL_SCRIPT" javaType="String" jdbcType="CLOB" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+        <result property="sqlType" column="J_SQL_TYPE"/>
+        <result property="targetTable" column="J_TARGET_TABLE"/>
+        <result property="truncateFlag" column="J_TRUNCATE_FLAG" javaType="boolean" jdbcType="BOOLEAN"/>
+        <result property="splitValue" column="J_SPLIT_VALUE"/>
+        <result property="enabled" column="J_ENABLED" javaType="boolean" jdbcType="BOOLEAN"/>
+        <result property="description" column="J_DESCRIPTION" javaType="String" jdbcType="CLOB" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+        <association property="sourceDatabase" resultMap="cn.com.cis.persistence.DatabaseMapper.databaseResultMap" columnPrefix="S_"/>
+        <association property="targetDatabase" resultMap="cn.com.cis.persistence.DatabaseMapper.databaseResultMap" columnPrefix="T_"/>
+        <association property="layer" resultMap="cn.com.cis.persistence.LayerMapper.layerResultMap" columnPrefix="L_"/>
+        <association property="mode" resultMap="cn.com.cis.persistence.ModeMapper.modeResultMap" columnPrefix="M_"/>
+    </resultMap>
+
+    <sql id="jobEntityColumnList">
+          J.ID_JOB        AS J_ID_JOB,
+          J.SEQUENCE      AS J_SEQUENCE,
+          J.NAME          AS J_NAME,
+          J.SQL_SCRIPT    AS J_SQL_SCRIPT,
+          J.SQL_TYPE      AS J_SQL_TYPE,
+          J.TARGET_TABLE  AS J_TARGET_TABLE,
+          J.TRUNCATE_FLAG AS J_TRUNCATE_FLAG,
+          J.SPLIT_VALUE   AS J_SPLIT_VALUE,
+          J.ENABLED       AS J_ENABLED,
+          J.DESCRIPTION   AS J_DESCRIPTION,
+          J.SPLIT_VALUE   AS J_SPLIT_VALUE,
+          S.ID_DATABASE   AS S_ID_DATABASE,
+          S.NAME          AS S_NAME,
+          S.HOST_NAME     AS S_HOST_NAME,
+          S.PORT          AS S_PORT,
+          S.SERVER_NAME   AS S_SERVER_NAME,
+          S.DATABASE_NAME AS S_DATABASE_NAME,
+          S.USERNAME      AS S_USERNAME,
+          S.PASSWORD      AS S_PASSWORD,
+          ST.DB_TYPE      AS S_CODE,
+          ST.DESCRIPTION  AS S_DESCRIPTION,
+          ST.URL          AS S_URL,
+          ST.DRIVER       AS S_DRIVER,
+          T.ID_DATABASE   AS T_ID_DATABASE,
+          T.NAME          AS T_NAME,
+          T.HOST_NAME     AS T_HOST_NAME,
+          T.PORT          AS T_PORT,
+          T.SERVER_NAME   AS T_SERVER_NAME,
+          T.DATABASE_NAME AS T_DATABASE_NAME,
+          T.USERNAME      AS T_USERNAME,
+          T.PASSWORD      AS T_PASSWORD,
+          TT.DB_TYPE      AS T_CODE,
+          TT.DESCRIPTION  AS T_DESCRIPTION,
+          TT.URL          AS T_URL,
+          TT.DRIVER       AS T_DRIVER,
+          L.ID_LAYER      AS L_ID_LAYER,
+          L.NAME          AS L_NAME,
+          L.SEQUENCE      AS L_SEQUENCE,
+          M.MODE_CODE     AS M_MODE_CODE,
+          M.DESCRIPTION      M_DESCRIPTION
+    </sql>
+    <select id="selectAllJobEntity" resultMap="jobEntityResultMap">
+        SELECT
+          <include refid="jobEntityColumnList"/>
+        FROM JM_JOB J LEFT JOIN JM_DATABASE S ON J.DATABASE_SOURCE = S.ID_DATABASE
+        LEFT JOIN JM_DATABASE T ON J.DATABASE_TARGET = T.ID_DATABASE
+        INNER JOIN JM_LAYER L ON J.ID_LAYER = L.ID_LAYER
+        INNER JOIN JM_MODE M ON J.MODE_CODE = M.MODE_CODE
+        LEFT JOIN JM_DATABASE_TYPE ST ON S.DB_TYPE = ST.DB_TYPE
+        LEFT JOIN JM_DATABASE_TYPE TT ON T.DB_TYPE = TT.DB_TYPE
+        <where>
+            <if test="enable != null and enable == true">
+                J.ENABLED = #{enable}
+            </if>
+        </where>
+        ORDER BY L.SEQUENCE, J.SEQUENCE ASC
+    </select>
+    <select id="selectJobEntityByLayer" parameterType="int" resultMap="jobEntityResultMap">
+        SELECT
+        <include refid="jobEntityColumnList"/>
+        FROM JM_JOB J LEFT JOIN JM_DATABASE S ON J.DATABASE_SOURCE = S.ID_DATABASE
+        LEFT JOIN JM_DATABASE T ON J.DATABASE_TARGET = T.ID_DATABASE
+        INNER JOIN JM_LAYER L ON J.ID_LAYER = L.ID_LAYER
+        INNER JOIN JM_MODE M ON J.MODE_CODE = M.MODE_CODE
+        LEFT JOIN JM_DATABASE_TYPE ST ON S.DB_TYPE = ST.DB_TYPE
+        LEFT JOIN JM_DATABASE_TYPE TT ON T.DB_TYPE = TT.DB_TYPE
+        <where>
+            <if test="layerId != null ">
+                J.ID_LAYER = #{layerId}
+            </if>
+            <if test="enable != null and enable == true">
+               and J.ENABLED = #{enable}
+            </if>
+        </where>
+        ORDER BY L.SEQUENCE, J.SEQUENCE ASC
+    </select>
+    <select id="selectJobEntityById" parameterType="int" resultMap="jobEntityResultMap">
+        SELECT
+        <include refid="jobEntityColumnList"/>
+        FROM JM_JOB J LEFT JOIN JM_DATABASE S ON J.DATABASE_SOURCE = S.ID_DATABASE
+        LEFT JOIN JM_DATABASE T ON J.DATABASE_TARGET = T.ID_DATABASE
+        INNER JOIN JM_LAYER L ON J.ID_LAYER = L.ID_LAYER
+        INNER JOIN JM_MODE M ON J.MODE_CODE = M.MODE_CODE
+        LEFT JOIN JM_DATABASE_TYPE ST ON S.DB_TYPE = ST.DB_TYPE
+        LEFT JOIN JM_DATABASE_TYPE TT ON T.DB_TYPE = TT.DB_TYPE
+        WHERE J.ID_JOB = #{id}
+    </select>
+
+    <select id="selectAllJobByDatabaseId" resultType="int">
+        select count(*) from jm_job where DATABASE_SOURCE = #{param1} or DATABASE_TARGET = #{param1}
+    </select>
+    <select id="selectJobEntityByLayerAndSequence" resultMap="jobEntityResultMap">
+        SELECT
+        <include refid="jobEntityColumnList"/>
+        FROM JM_JOB J LEFT JOIN JM_DATABASE S ON J.DATABASE_SOURCE = S.ID_DATABASE
+        LEFT JOIN JM_DATABASE T ON J.DATABASE_TARGET = T.ID_DATABASE
+        INNER JOIN JM_LAYER L ON J.ID_LAYER = L.ID_LAYER
+        INNER JOIN JM_MODE M ON J.MODE_CODE = M.MODE_CODE
+        LEFT JOIN JM_DATABASE_TYPE ST ON S.DB_TYPE = ST.DB_TYPE
+        LEFT JOIN JM_DATABASE_TYPE TT ON T.DB_TYPE = TT.DB_TYPE
+        WHERE J.ID_LAYER = #{param1}
+        AND J.SEQUENCE = #{param2}
+    </select>
+
+    <select id="selectJobEntityByJobName" resultMap="jobEntityResultMap">
+        SELECT
+        <include refid="jobEntityColumnList"/>
+        FROM JM_JOB J LEFT JOIN JM_DATABASE S ON J.DATABASE_SOURCE = S.ID_DATABASE
+        LEFT JOIN JM_DATABASE T ON J.DATABASE_TARGET = T.ID_DATABASE
+        INNER JOIN JM_LAYER L ON J.ID_LAYER = L.ID_LAYER
+        INNER JOIN JM_MODE M ON J.MODE_CODE = M.MODE_CODE
+        LEFT JOIN JM_DATABASE_TYPE ST ON S.DB_TYPE = ST.DB_TYPE
+        LEFT JOIN JM_DATABASE_TYPE TT ON T.DB_TYPE = TT.DB_TYPE
+        WHERE J.NAME  = #{jobName}
+    </select>
+
+    <update id="updateJobEntity" parameterType="JobEntity">
+        UPDATE JM_JOB SET
+          ID_LAYER = #{layer.id},
+          MODE_CODE = #{mode.code},
+          SEQUENCE = #{sequence},
+          NAME = #{name},
+          SQL_SCRIPT = #{sqlScript,jdbcType=CLOB},
+          SQL_TYPE = #{sqlType,jdbcType=VARCHAR},
+          TARGET_TABLE = #{targetTable,jdbcType=VARCHAR},
+          DATABASE_SOURCE = #{sourceDatabase.id,jdbcType=INTEGER},
+          DATABASE_TARGET = #{targetDatabase.id,jdbcType=INTEGER},
+          TRUNCATE_FLAG = #{truncateFlag,jdbcType=BOOLEAN},
+          SPLIT_VALUE = #{splitValue,jdbcType=INTEGER},
+          ENABLED = #{enabled,jdbcType=BOOLEAN},
+          DESCRIPTION = #{description,jdbcType=CLOB}
+        WHERE ID_JOB = #{id}
+    </update>
+
+    <insert id="insertJobEntity" parameterType="JobEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="ID_JOB">
+        INSERT INTO JM_JOB
+          (ID_LAYER,MODE_CODE,SEQUENCE,NAME,SQL_SCRIPT,SQL_TYPE,TARGET_TABLE,DATABASE_SOURCE,DATABASE_TARGET,TRUNCATE_FLAG,SPLIT_VALUE,ENABLED,DESCRIPTION)
+        VALUES
+          (#{layer.id}, #{mode.code}, #{sequence}, #{name}, #{sqlScript,jdbcType=CLOB},#{sqlType,jdbcType=VARCHAR}, #{targetTable,jdbcType=VARCHAR}, #{sourceDatabase.id,jdbcType=INTEGER},#{targetDatabase.id,jdbcType=INTEGER},#{truncateFlag,jdbcType=BOOLEAN},#{splitValue,jdbcType=INTEGER},#{enabled,jdbcType=BOOLEAN},#{description,jdbcType=CLOB})
+    </insert>
+    <update id="disableJobEntity" parameterType="int">
+        UPDATE JM_JOB SET
+          ENABLED = FALSE
+        WHERE ID_JOB = #{id}
+    </update>
+    <update id="enableJobEntity" parameterType="int">
+        UPDATE JM_JOB SET
+        ENABLED = TRUE
+        WHERE ID_JOB = #{id}
+    </update>
+    <delete id="deleteJobEntity" parameterType="int">
+        DELETE FROM JM_JOB WHERE ID_JOB = #{id}
+    </delete>
+</mapper>
+

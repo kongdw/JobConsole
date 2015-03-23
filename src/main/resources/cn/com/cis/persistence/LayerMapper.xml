@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.LayerMapper">
+
+    <cache/>
+
+    <resultMap id="layerResultMap" type="cn.com.cis.domain.Layer">
+        <id property="id" column="ID_LAYER"/>
+        <result property="name" column="NAME"/>
+        <result property="sequence" column="SEQUENCE"/>
+    </resultMap>
+    <select id="selectAllLayer"  resultMap="layerResultMap">
+        SELECT ID_LAYER,NAME,SEQUENCE FROM JM_LAYER ORDER BY SEQUENCE ASC
+    </select>
+
+    <select id="selectLayerBySequence" resultMap="layerResultMap">
+        SELECT ID_LAYER,NAME,SEQUENCE FROM JM_LAYER WHERE SEQUENCE=#{id} ORDER BY SEQUENCE ASC
+    </select>
+
+    <select id="selectLayerById" resultMap="layerResultMap">
+         SELECT ID_LAYER,NAME,SEQUENCE FROM JM_LAYER WHERE ID_LAYER=#{id} ORDER BY SEQUENCE ASC
+    </select>
+
+    <insert id="insertLayer" parameterType="Layer" useGeneratedKeys="true" keyProperty="id" keyColumn="ID_LAYER">
+        insert into JM_LAYER (NAME, SEQUENCE) values (#{name},#{sequence})
+    </insert>
+
+    <update id="updateLayer" parameterType="Layer">
+        update JM_LAYER set
+              NAME = #{name},
+              SEQUENCE = #{sequence}
+        where ID_LAYER = #{id}
+    </update>
+
+    <delete id="deleteLayer" parameterType="int">
+        delete from JM_LAYER where ID_LAYER = #{id}
+    </delete>
+
+</mapper>

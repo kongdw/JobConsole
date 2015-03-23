@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.cis.persistence.JobLogMapper">
+    <cache/>
+
+    <resultMap id="jobLogResultMap" type="cn.com.cis.domain.JobLog">
+        <id property="id" column="ID_LOG"/>
+        <result property="logDate" column="LOG_DATE" javaType="Date" jdbcType="DATE"/>
+        <result property="jobName" column="JOB_NAME" javaType="String" jdbcType="VARCHAR"/>
+        <result property="username" column="USERNAME" javaType="String" jdbcType="VARCHAR"/>
+        <result property="beginTime" column="BEGIN_TIME" javaType="Date" jdbcType="TIMESTAMP"
+                typeHandler="org.apache.ibatis.type.SqlTimestampTypeHandler"/>
+        <result property="endTime" column="END_TIME" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="status" column="STATUS" javaType="String" jdbcType="VARCHAR"/>
+        <result property="nbLine" column="NB_LINE" javaType="long" jdbcType="BIGINT"/>
+        <result property="message" column="MESSAGE" javaType="String" jdbcType="CLOB"
+                typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    </resultMap>
+    <sql id="jobLogColumnList">
+        ID_LOG,
+        LOG_DATE,
+        JOB_NAME,
+        USERNAME,
+        BEGIN_TIME,
+        END_TIME,
+        STATUS,
+        NB_LINE,
+        MESSAGE
+    </sql>
+
+    <select id="selectJobLogByJobName" resultMap="jobLogResultMap">
+        SELECT
+        <include refid="jobLogColumnList"/>
+        FROM JM_LOG
+        WHERE JOB_NAME = #{jobName}
+    </select>
+    <select id="selectAllJobLog" resultMap="jobLogResultMap">
+        SELECT
+        <include refid="jobLogColumnList"/>
+        FROM JM_LOG
+        ORDER BY LOG_DATE DESC
+    </select>
+
+    <select id="selectJobLogById"  resultMap="jobLogResultMap">
+        SELECT
+        <include refid="jobLogColumnList"/>
+        FROM JM_LOG
+        WHERE ID_LOG = #{id}
+    </select>
+
+    <update id="updateJobLog" parameterType="cn.com.cis.domain.JobLog">
+        UPDATE JM_LOG SET
+          END_TIME = #{endTime,jdbcType=TIMESTAMP},
+          STATUS = #{status,jdbcType=VARCHAR},
+          NB_LINE = #{nbLine,jdbcType=BIGINT},
+          MESSAGE = #{message,jdbcType=CLOB}
+        WHERE ID_LOG=#{id}
+    </update>
+
+    <insert id="insertJobLog" parameterType="cn.com.cis.domain.JobLog" useGeneratedKeys="true" keyProperty="id" keyColumn="ID_LOG">
+        INSERT INTO JM_LOG (LOG_DATE,JOB_NAME,USERNAME,BEGIN_TIME,END_TIME,STATUS,NB_LINE,MESSAGE)
+          VALUES (#{logDate,jdbcType=DATE},#{jobName,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{beginTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{status,jdbcType=VARCHAR},#{nbLine,jdbcType=BIGINT},#{message,jdbcType=CLOB})
+    </insert>
+</mapper>
+

@@ -23,7 +23,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         Object obj = session.getAttribute("user");
         // 判断如果没有取到用户信息，就跳转到登陆页面，提示用户进行登陆
         if (obj == null || "".equals(obj.toString())) {
-            res.sendRedirect(LOGIN_URL);
+            res.sendRedirect(req.getContextPath()+LOGIN_URL);
         } else {
             User user = (User) obj;
             return isAdmin(user) || isView(req);
@@ -37,18 +37,19 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     private boolean isView(HttpServletRequest request) {
         String uri = request.getRequestURI();
-        return uri.startsWith("/main")
-                || uri.startsWith("/logout")
-                || uri.startsWith("/parameter/typeList")
-                || uri.startsWith("/job/ajaxlistMain")
-                || uri.startsWith("/queue/MainAjaxlist")
-                || uri.startsWith("/log/ajaxlist")
-                || uri.startsWith("/queue/start")
-                || uri.startsWith("/queue/stop")
-                || uri.startsWith("/queue/executeAll")
-                || uri.startsWith("/user/editpwd")
-                || uri.startsWith("/user/edit")
-                || uri.startsWith("/user/checkoldpassword");
+        String contextPath = request.getContextPath();
+        return uri.startsWith(contextPath+"/main")
+                || uri.startsWith(contextPath+"/logout")
+                || uri.startsWith(contextPath+"/parameter/typeList")
+                || uri.startsWith(contextPath+"/job/ajaxlistMain")
+                || uri.startsWith(contextPath+"/queue/MainAjaxlist")
+                || uri.startsWith(contextPath+"/log/ajaxlist")
+                || uri.startsWith(contextPath+"/queue/start")
+                || uri.startsWith(contextPath+"/queue/stop")
+                || uri.startsWith(contextPath+"/queue/executeAll")
+                || uri.startsWith(contextPath+"/user/editpwd")
+                || uri.startsWith(contextPath+"/user/edit")
+                || uri.startsWith(contextPath+"/user/checkoldpassword");
 
     }
 

@@ -50,7 +50,7 @@
                         <strong>异常</strong> ${error}
                     </div>
                 </c:if>
-                <form class="form-horizontal" role="form" action="/job/add" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/job/add" method="post">
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">作业名称</label>
@@ -222,7 +222,7 @@
 
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success" onclick="return CheckValue()">提交</button>
-                            <a type="button" class="btn btn-primary" href="/job/list?page=1">
+                            <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/job/list?page=1">
                                 返回列表
                             </a>
                         </div>

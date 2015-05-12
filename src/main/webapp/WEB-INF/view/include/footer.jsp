@@ -4,7 +4,7 @@
 
 
                 Copyright © <span id="yearCopyright">2015</span> &nbsp;
-                中公网医疗信息技术有限公司 &nbsp; - All Rights Reserved
+                中公网医疗信息技术有限公司 &nbsp; - All Rights Reserved v:1.01 build 20150413
 
 
 </div>

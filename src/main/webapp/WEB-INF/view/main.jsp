@@ -52,8 +52,8 @@
         </div>
         <div class="col-md-4">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/queue/start'"  <c:if test="${serverStatus == true}">disabled</c:if>>启动服务</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href='/queue/stop'" <c:if test="${serverStatus == false}">disabled</c:if>>停止服务</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/queue/start'"  <c:if test="${serverStatus == true}">disabled</c:if>>启动服务</button>
+                <button type="button" class="btn btn-danger" onclick="window.location.href='${pageContext.request.contextPath}/queue/stop'" <c:if test="${serverStatus == false}">disabled</c:if>>停止服务</button>
                 <a type="button" href="/queue/executeAll" class="btn btn-primary">执行作业</a>
             </div>
         </div>
@@ -133,7 +133,7 @@
     <div class="col-md-12">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active">
-                <a href="#job" data-toggle="tab" onclick="getJob('/job/ajaxlistMain?page=1')">
+                <a href="#job" data-toggle="tab" onclick="getJob('${pageContext.request.contextPath}/job/ajaxlistMain?page=1')">
                     作业列表
                 </a>
             </li>
@@ -143,7 +143,7 @@
                 </a>
             </li>
             <li>
-                <a href="#log" data-toggle="tab" onclick="getLog('/log/ajaxlist')">
+                <a href="#log" data-toggle="tab" onclick="getLog('${pageContext.request.contextPath}/log/ajaxlist')">
                     作业历史
                 </a>
             </li>
@@ -322,7 +322,7 @@
 <script type="text/javascript">
     // 定义一个新的复制对象
     var clip = new ZeroClipboard(document.getElementById("d_clip_button"), {
-        moviePath: "/res/js/ZeroClipboard.swf"
+        moviePath: "${pageContext.request.contextPath}/res/js/ZeroClipboard.swf"
     } );
 
     // 复制内容到剪贴板成功后的操作
@@ -598,7 +598,7 @@
 
 
         //加载作业列表
-        getJob('/job/ajaxlistMain?page=1');
+        getJob('${pageContext.request.contextPath}/job/ajaxlistMain?page=1');
 
         var gaugeOptions = {
             chart: {
@@ -819,7 +819,7 @@ function UpdateParamByID(id,refName) {
         $.ajax({
             async : false,
             type: "get",
-            url: "/parameter/UpdateParamByIDAjax?id=" + id + "&defaultVal=" + defaultValNow,
+            url: "${pageContext.request.contextPath}/parameter/UpdateParamByIDAjax?id=" + id + "&defaultVal=" + defaultValNow,
             beforeSend: function (XMLHttpRequest) {
                 //ShowLoading();
             },
@@ -851,10 +851,9 @@ function checkParamDate() {
 function getQueue() {
     //清空queuebody中的内容
     OndeleteElement("queuebody");
-    var hostval = window.location.protocol+"//"+window.location.host;
     $.ajax({
         type: "GET",
-        url: hostval+'/queue/MainAjaxlist',//提供数据的Servlet
+        url: '${pageContext.request.contextPath}/queue/MainAjaxlist',//提供数据的Servlet
         success: function (data) {
             $.each(data, function (idx, item) {
                 $("#queuebody").append(
@@ -983,7 +982,7 @@ function getLog(url) {
                 totalPages: pagesLog,
                 visiblePages: 4,
                 onPageClick: function (event, page) {
-                    getLog('/log/ajaxlist?page=' + page);
+                    getLog('${pageContext.request.contextPath}/log/ajaxlist?page=' + page);
                 }
             });
 

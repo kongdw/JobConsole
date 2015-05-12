@@ -28,7 +28,7 @@
             </div>
             <div class="widget-box-content" style="padding:15px;">
 
-                <form class="form-horizontal" role="form" action="/layer/edit" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/layer/edit" method="post">
                     <input type="hidden" name="id" value="${layer.id}"/>
                     <div class="form-group">
                         <label class="col-xs-2 control-label">顺序号</label>
@@ -54,7 +54,7 @@
 
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success">提交</button>
-                            <a type="button" class="btn btn-primary" href="/layer/list">
+                            <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/layer/list">
                                 返回列表
                             </a>
                         </div>

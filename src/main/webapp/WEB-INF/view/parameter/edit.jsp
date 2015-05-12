@@ -33,7 +33,7 @@
                         <strong>异常:</strong> ${error}
                     </div>
                 </c:if>
-                <form class="form-horizontal" role="form" action="/parameter/update" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/parameter/update" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">参数名</label>
 
@@ -73,7 +73,7 @@
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success">提交</button>
                             <a type="button" class="btn btn-primary"
-                               href="/parameter/glist">
+                               href="${pageContext.request.contextPath}/parameter/glist">
                                 返回列表
                             </a>
                         </div>

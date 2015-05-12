@@ -41,7 +41,7 @@
                 <div class="col-sm-1">
                     <div class="btn-group-sm" style="padding:2px;">
                         <a type="button" class="btn btn-default btn-sm glyphicon glyphicon-plus"
-                           href="/databasetype/add"> 添加
+                           href="${pageContext.request.contextPath}/databasetype/add"> 添加
                         </a>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                     <td>${d.driver}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-primary" href="/databasetype/edit?type=${d.type}">修改</a>
+                                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/databasetype/edit?type=${d.type}">修改</a>
                                             <button class="btn btn-danger"
                                                     onclick="openModal('/databasetype/del?type=${d.type}','删除数据源类型？','被数据源引用的类型无法删除，类型删除之后无法恢复，是否继续？')">
                                                 删除

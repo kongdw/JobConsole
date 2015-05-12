@@ -41,7 +41,7 @@
                 <div class="col-sm-1">
                     <div class="btn-group-sm" style="padding:2px;">
                         <a type="button" class="btn btn-default btn-sm glyphicon glyphicon-plus"
-                           href="/database/add"> 添加
+                           href="${pageContext.request.contextPath}/database/add"> 添加
                         </a>
                     </div>
                 </div>
@@ -72,9 +72,9 @@
                                     <td>${d.username}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-primary" href="/database/edit?id=${d.id}">修改</a>
+                                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/database/edit?id=${d.id}">修改</a>
                                             <button class="btn btn-danger"
-                                                    onclick="openModal('/database/del?id=${d.id}','删除数据源？','被作业引用的数据源无法删除，数据源删除之后无法恢复，是否继续？')">
+                                                    onclick="openModal('${pageContext.request.contextPath}/database/del?id=${d.id}','删除数据源？','被作业引用的数据源无法删除，数据源删除之后无法恢复，是否继续？')">
                                                 删除
                                             </button>
                                             <button id="testDatabaseBtn" class="btn btn-warning"
@@ -101,7 +101,7 @@
     function testDatabase(id) {
         $.ajax({
             type: "get",
-            url: "/database/test?id=" + id,
+            url: "${pageContext.request.contextPath}/database/test?id=" + id,
             beforeSend: function (XMLHttpRequest) {
                 //ShowLoading();
             },

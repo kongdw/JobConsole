@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="include/head.jsp" %>
-<body style="background: url('/res/images/bg.png')">
+<body style="background: url('${pageContext.request.contextPath}/res/images/bg.png')">
 <nav class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="box-content padded">
-                    <form class="separate-sections" name="login" id="login" action="/login" method="POST">
+                    <form class="separate-sections" name="login" id="login" action="${pageContext.request.contextPath}/login" method="POST">
                         <div class="input-group addon-left">
 									<span class="input-group-addon" href="#">
 										<i class="icon-user"></i>

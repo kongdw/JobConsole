@@ -95,11 +95,11 @@
                                                 <td>
                                                     <div class="btn-group">
                                                         <a type="button" class="btn btn-primary"
-                                                           href="/user/edit?id=${user.id}">
+                                                           href="${pageContext.request.contextPath}/user/edit?id=${user.id}">
                                                             修改
                                                         </a>
                                                         <button type="button" class="btn btn-danger"
-                                                                onclick="openModal('/user/del?id=${user.id}','删除用户？','确定要删除当前选中用户吗？')">
+                                                                onclick="openModal('${pageContext.request.contextPath}/user/del?id=${user.id}','删除用户？','确定要删除当前选中用户吗？')">
                                                             删除
                                                         </button>
                                                     </div>

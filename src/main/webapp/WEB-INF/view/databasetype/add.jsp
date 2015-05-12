@@ -42,7 +42,7 @@
                 <c:if test="${not empty message}">
                     <div class="alert alert-danger" role="alert">${message}</div>
                 </c:if>
-                <form class="form-horizontal" role="form" action="/databasetype/add" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/databasetype/add" method="post">
                     <div class="form-group">
                         <label class="col-xs-2 control-label">类型名称</label>
 
@@ -86,7 +86,7 @@
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success">提交</button>
                             <a type="button" class="btn btn-primary"
-                               href="/databasetype/list">
+                               href="${pageContext.request.contextPath}/databasetype/list">
                                 返回列表
                             </a>
                         </div>

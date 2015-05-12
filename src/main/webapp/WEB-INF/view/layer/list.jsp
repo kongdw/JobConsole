@@ -40,7 +40,7 @@
                 <div class="col-sm-1">
                     <div class="btn-group-sm" style="padding:2px;">
                         <a type="button" class="btn btn-default btn-sm glyphicon glyphicon-plus"
-                           href="/layer/add"> 添加
+                           href="${pageContext.request.contextPath}/layer/add"> 添加
                         </a>
                     </div>
                 </div>
@@ -64,15 +64,15 @@
                                     <td>
                                         <div class="btn-group">
                                             <a type="button" class="btn btn-primary"
-                                               href="/layer/edit?id=${layer.id}">
+                                               href="${pageContext.request.contextPath}/layer/edit?id=${layer.id}">
                                                 修改
                                             </a>
                                             <button type="button" class="btn btn-danger"
-                                                    onclick="openModal('/layer/del?id=${layer.id}','删除层级？','确定要删除当前选中层级吗？')">
+                                                    onclick="openModal('${pageContext.request.contextPath}/layer/del?id=${layer.id}','删除层级？','确定要删除当前选中层级吗？')">
                                                 删除
                                             </button>
                                             <button type="button" class="btn btn-warning"
-                                                    onclick="openModal('/queue/start/${layer.id}','执行层级下所有作业？','确定要执行该层级下的所有作业吗？')">
+                                                    onclick="openModal('${pageContext.request.contextPath}/queue/start/${layer.id}','执行层级下所有作业？','确定要执行该层级下的所有作业吗？')">
                                                 执行
                                             </button>
                                         </div>

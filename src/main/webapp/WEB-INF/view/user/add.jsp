@@ -30,7 +30,7 @@
             <c:if test="${not empty message}">
                 <div class="alert alert-danger" role="alert">${message}</div>
             </c:if>
-            <form class="form-horizontal" role="form" action="/user/add" method="post">
+            <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/user/add" method="post">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">用户名称:</label>
 
@@ -87,7 +87,7 @@
 
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-success">提交</button>
-                        <a type="button" class="btn btn-primary" href="/user/list/1">
+                        <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/user/list/1">
                             返回列表
                         </a>
                     </div>

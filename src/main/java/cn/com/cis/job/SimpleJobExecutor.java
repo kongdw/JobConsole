@@ -186,24 +186,28 @@ public class SimpleJobExecutor implements JobExecutor, ILifeCycle {
                 }
             } catch (SQLException e) {
                 ic++;
-                logger.warn("truncate table 异常{}，正在第{}重试链接", e.getMessage(), ic);
+                logger.warn("truncate table 异常，正在第{}重试链接", e.getMessage(), ic);
             }
         }
         sql = "TRUNCATE TABLE " + jobInfo.getTargetTable();
-        try {
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.execute();
-            connection.commit();
-        } catch (Exception e) {
-            logger.error("截断表异常:{}", sql, e);
-            throw new JobException(e);
-        } finally {
+        if(connection != null) {
             try {
-                if (connection != null && !connection.isClosed())
-                    connection.close();
-            } catch (SQLException e) {
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.execute();
+                connection.commit();
+            } catch (Exception e) {
+                logger.error("截断表异常:{}", sql, e);
+                throw new JobException(e);
+            } finally {
+                try {
+                    if (connection != null && !connection.isClosed())
+                        connection.close();
+                } catch (SQLException e) {
 
+                }
             }
+        }else {
+            throw new JobException("截断表异常,数据库连接未成功初始化!");
         }
     }
 

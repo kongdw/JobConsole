@@ -9,7 +9,7 @@
 
         <li class="active">
             <span class="glow"></span>
-            <a href="/main">
+            <a href="${pageContext.request.contextPath}/main">
                 <i class="icon-home icon-2x"></i>
                 <span>主页</span>
             </a>
@@ -18,43 +18,43 @@
 
             <li class="dark-nav">
                 <span class="glow"></span>
-                <a class="accordion-toggle collapsed" data-toggle="collapse" href="#jobList">
+                <a class="accordion-toggle" data-toggle="collapse" href="#jobList">
                     <i class="icon-list icon-2x"></i>
                     <span>配置管理<i class="icon-caret-down"></i></span>
                 </a>
-                <ul id="jobList" class="collapse">
+                <ul id="jobList" class="collapse in">
                     <li class="">
-                        <a href="/job/list?page=1">
+                        <a href="${pageContext.request.contextPath}/job/list?page=1">
                             <i class="icon-chevron-right"></i> 作业管理</a>
                     </li>
                     <li class=""><a
-                            href="/layer/list"><i
+                            href="${pageContext.request.contextPath}/layer/list"><i
                             class="icon-chevron-right"></i> 层级管理</a></li>
                     <li class=""><a
-                            href="/database/list"><i
+                            href="${pageContext.request.contextPath}/database/list"><i
                             class="icon-chevron-right"></i>数据源管理</a></li>
                     <li class=""><a
-                            href="/databasetype/list"><i
+                            href="${pageContext.request.contextPath}/databasetype/list"><i
                             class="icon-chevron-right"></i>数据源类型管理</a></li>
                     <li class=""><a
-                            href="/parameter/glist"><i
+                            href="${pageContext.request.contextPath}/parameter/glist"><i
                             class="icon-chevron-right"></i>全局参数管理</a></li>
                     <li class=""><a
-                            href="/user/list/1"><i
+                            href="${pageContext.request.contextPath}/user/list/1"><i
                             class="icon-chevron-right"></i>用户管理</a></li>
 
                 </ul>
             </li>
             <li class="">
                 <span class="glow"></span>
-                <a href="/queue/list">
+                <a href="${pageContext.request.contextPath}/queue/list">
                     <i class="icon-time icon-2x"></i>
                     <span>等待队列</span>
                 </a>
             </li>
             <li class="">
                 <span class="glow"></span>
-                <a href="/log/list/1">
+                <a href="${pageContext.request.contextPath}/log/list/1">
                     <i class="icon-desktop icon-2x"></i>
                     <span>执行日志</span>
                 </a>
@@ -158,6 +158,12 @@
                 <span>退出</span>
             </a>
         </li>
-
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#logoutButton').click(function () {
+                    window.location.replace("${pageContext.request.contextPath}/logout");
+                });
+            });
+        </script>
     </ul>
 </div>

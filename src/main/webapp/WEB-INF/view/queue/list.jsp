@@ -44,7 +44,7 @@
                                     <td><kbd>${q.targetTable}</kbd></td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="/queue/del?jobId=${q.jobId}">
+                                            <a href="${pageContext.request.contextPath}/queue/del?jobId=${q.jobId}">
                                                 <button type="submit" class="btn btn-danger btn-xs">删除</button>
                                             </a>
                                         </div>

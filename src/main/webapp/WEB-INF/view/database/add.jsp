@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="widget-box-content" style="padding:15px;">
-                <form class="form-horizontal" role="form" action="/database/add" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/database/add" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">数据源名称</label>
 
@@ -101,7 +101,7 @@
 
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success">提交</button>
-                            <a type="button" class="btn btn-primary" href="/database/list">
+                            <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/database/list">
                                 返回列表
                             </a>
                         </div>

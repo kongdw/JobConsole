@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="widget-box-content" style="padding:15px;">
-                <form class="form-horizontal" role="form" action="/databasetype/edit" method="post">
+                <form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/databasetype/edit" method="post">
 
                     <input type="hidden"  value="${databasetype.type}" name="oldtype">
                     <div class="form-group">
@@ -79,7 +79,7 @@
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-success">提交</button>
                             <a type="button" class="btn btn-primary"
-                               href="/databasetype/list">
+                               href="${pageContext.request.contextPath}/databasetype/list">
                                 返回列表
                             </a>
                         </div>

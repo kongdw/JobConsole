@@ -16,7 +16,7 @@
                         <div class="col-sm-1">
                             <div class="btn-group-sm" style="padding:2px;">
                                 <a type="button" class="btn btn-default btn-sm glyphicon glyphicon-plus"
-                                   href="/parameter/add"> 添加
+                                   href="${pageContext.request.contextPath}/parameter/add"> 添加
                                 </a>
                             </div>
                         </div>
@@ -71,10 +71,10 @@
                                             </c:if>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="/parameter/edit?id=${list.id}">
+                                                    <a href="${pageContext.request.contextPath}/parameter/edit?id=${list.id}">
                                                         <button type="submit" class="btn btn-primary">修改</button>
                                                     </a>
-                                                    <a href="/parameter/del?id=${list.id}">
+                                                    <a href="${pageContext.request.contextPath}/parameter/del?id=${list.id}">
                                                         <button type="submit" class="btn btn-danger">删除</button>
                                                     </a>
                                                 </div>

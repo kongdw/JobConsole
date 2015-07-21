@@ -174,8 +174,6 @@ public class SimpleJobExecutor implements JobExecutor, ILifeCycle {
 
     private void truncateTable() throws JobException {
         Connection connection = null;
-        String sql = "";
-
         int ic = 0;
         while (ic < MAX_INIT_NUM) {
             try {
@@ -186,10 +184,10 @@ public class SimpleJobExecutor implements JobExecutor, ILifeCycle {
                 }
             } catch (SQLException e) {
                 ic++;
-                logger.warn("truncate table 异常，正在第{}重试链接", e.getMessage(), ic);
+                logger.warn("初始化数据库连接,正在第{}重试.", e.getMessage(), ic);
             }
         }
-        sql = "TRUNCATE TABLE " + jobInfo.getTargetTable();
+        String sql = "TRUNCATE TABLE " + jobInfo.getTargetTable();
         if(connection != null) {
             try {
                 PreparedStatement pst = connection.prepareStatement(sql);

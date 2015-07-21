@@ -11,8 +11,8 @@
         <result property="type" column="DB_TYPE" javaType="String" jdbcType="VARCHAR"/>
         <result property="description" column="DESCRIPTION" javaType="String" jdbcType="VARCHAR"/>
         <result property="url" column="URL" javaType="String" jdbcType="VARCHAR"/>
-        <result property="url2" column="URL2" javaType="String" jdbcType="VARCHAR"/>
         <result property="driver" column="DRIVER" javaType="String" jdbcType="VARCHAR"/>
+        <result property="testSql" column="TEST_SQL" javaType="String" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="databaseResultMap" type="cn.com.cis.domain.Database">
@@ -21,7 +21,6 @@
         <result property="hostName" column="HOST_NAME"/>
         <result property="port" column="PORT"/>
         <result property="serverName" column="SERVER_NAME"/>
-        <result property="databaseName" column="DATABASE_NAME"/>
         <result property="username" column="USERNAME"/>
         <result property="password" column="PASSWORD"/>
         <association property="databaseType" resultMap="databaseTypeResultMap"/>
@@ -34,13 +33,11 @@
           HOST_NAME,
           PORT,
           SERVER_NAME,
-          DATABASE_NAME,
           USERNAME,
           PASSWORD,
           A.DB_TYPE,
           DESCRIPTION,
           URL,
-          URL2,
           DRIVER
         FROM JM_DATABASE A,JM_DATABASE_TYPE B
         WHERE A.DB_TYPE = B.DB_TYPE
@@ -53,13 +50,11 @@
         HOST_NAME,
         PORT,
         SERVER_NAME,
-        DATABASE_NAME,
         USERNAME,
         PASSWORD,
         A.DB_TYPE,
         DESCRIPTION,
         URL,
-        URL2,
         DRIVER
         FROM JM_DATABASE A,JM_DATABASE_TYPE B
         WHERE A.DB_TYPE = B.DB_TYPE
@@ -72,13 +67,11 @@
           HOST_NAME,
           PORT,
           SERVER_NAME,
-          DATABASE_NAME,
           USERNAME,
           PASSWORD,
           A.DB_TYPE,
           DESCRIPTION,
           URL,
-          URL2,
           DRIVER
         FROM JM_DATABASE A,JM_DATABASE_TYPE B
         WHERE A.DB_TYPE = B.DB_TYPE
@@ -90,7 +83,6 @@
           DB_TYPE,
           DESCRIPTION,
           URL,
-          URL2,
           DRIVER
         FROM JM_DATABASE_TYPE
     </select>
@@ -100,7 +92,6 @@
           DB_TYPE,
           DESCRIPTION,
           URL,
-          URL2,
           DRIVER
         FROM JM_DATABASE_TYPE
         WHERE DB_TYPE = #{type}
@@ -130,7 +121,6 @@
           HOST_NAME = #{hostName},
           PORT = #{port},
           SERVER_NAME = #{serverName,jdbcType=VARCHAR},
-          DATABASE_NAME = #{databaseName,jdbcType=VARCHAR},
           USERNAME = #{username,jdbcType=VARCHAR},
           PASSWORD = #{password,jdbcType=VARCHAR}
         WHERE ID_DATABASE = #{id}
@@ -138,9 +128,9 @@
     <!-- useGeneratedKeys="true" 定义主键自增长-->
     <insert id="insertDatabase" parameterType="cn.com.cis.domain.Database" useGeneratedKeys="true" keyProperty="id" keyColumn="ID_DATABASE">
         INSERT INTO JM_DATABASE
-          (DB_TYPE,NAME, HOST_NAME, SERVER_NAME, DATABASE_NAME, PORT, USERNAME, PASSWORD)
+          (DB_TYPE,NAME, HOST_NAME, SERVER_NAME, PORT, USERNAME, PASSWORD)
         VALUES
-          (#{databaseType.type},#{name}, #{hostName}, #{serverName,jdbcType=VARCHAR}, #{databaseName,jdbcType=VARCHAR}, #{port},  #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+          (#{databaseType.type},#{name}, #{hostName}, #{serverName,jdbcType=VARCHAR}, #{port},  #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
     </insert>
 
     <delete id="deleteDatabase">

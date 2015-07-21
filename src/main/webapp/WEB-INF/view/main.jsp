@@ -54,7 +54,7 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/queue/start'"  <c:if test="${serverStatus == true}">disabled</c:if>>启动服务</button>
                 <button type="button" class="btn btn-danger" onclick="window.location.href='${pageContext.request.contextPath}/queue/stop'" <c:if test="${serverStatus == false}">disabled</c:if>>停止服务</button>
-                <a type="button" href="/queue/executeAll" class="btn btn-primary">执行作业</a>
+                <a type="button" href="${pageContext.request.contextPath}/queue/executeAll" class="btn btn-primary">执行作业</a>
             </div>
         </div>
     </div>

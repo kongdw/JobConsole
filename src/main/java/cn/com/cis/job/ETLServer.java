@@ -109,7 +109,7 @@ public class ETLServer implements Runnable {
                 try {
                     shutdownNow();
                 } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                   
                 }
                 Thread.currentThread().interrupt();
             }

@@ -5,12 +5,14 @@ import java.io.Serializable;
 /**
  *
  * 数据库链接信息实体类
- *
+ * @version 1.0 2015-07-13
+ * @author kongdw
  */
 
 public class Database implements Serializable {
 
     private static final long serialVersionUID = -4470281017887560469L;
+
     private int id;
     private String name;
     private String hostName;

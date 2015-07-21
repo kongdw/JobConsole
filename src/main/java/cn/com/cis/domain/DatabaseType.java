@@ -2,6 +2,11 @@ package cn.com.cis.domain;
 
 import java.io.Serializable;
 
+/**
+ * 数据库连接类型
+ * @version 1.0 2015-07-14
+ * @author kongdw
+ */
 public class DatabaseType implements Serializable {
 
     private static final long serialVersionUID = -9197478986394202990L;
@@ -9,8 +14,8 @@ public class DatabaseType implements Serializable {
     private String type;
     private String description;
     private String url;
-    private String url2;
     private String driver;
+    private String testSql;
 
     public String getType() {
         return type;
@@ -36,19 +41,19 @@ public class DatabaseType implements Serializable {
         this.url = url;
     }
 
-    public String getUrl2() {
-        return url2;
-    }
-
-    public void setUrl2(String url2) {
-        this.url2 = url2;
-    }
-
     public String getDriver() {
         return driver;
     }
 
     public void setDriver(String driver) {
         this.driver = driver;
+    }
+
+    public String getTestSql() {
+        return testSql;
+    }
+
+    public void setTestSql(String testSql) {
+        this.testSql = testSql;
     }
 }

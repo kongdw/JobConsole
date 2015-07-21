@@ -13,7 +13,7 @@
                     <span class="breadcrumb-arrow"><span></span></span>
                 </div>
                 <div class="breadcrumb-button">
-                    <span class="breadcrumb-label"><i class="icon-list"></i> 数据源类型列表</span>
+                    <span class="breadcrumb-label"><i class="icon-list"></i> 驱动列表</span>
                     <span class="breadcrumb-arrow"><span></span></span>
                 </div>
             </div>
@@ -36,7 +36,7 @@
         <div class="widget-box">
             <div class="widget-box-header">
                 <div class="col-sm-1">
-                    <div class="title">数据源类型列表</div>
+                    <div class="title">驱动列表</div>
                 </div>
                 <div class="col-sm-1">
                     <div class="btn-group-sm" style="padding:2px;">
